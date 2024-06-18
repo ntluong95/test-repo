@@ -50,8 +50,9 @@ jobs:
               echo "${TRANSLATION_BRANCH}"
 
               git status
-              git pull origin "${EN_BRANCH#refs/heads/}"
-              # git pull --no-rebase origin "${EN_BRANCH#refs/heads/}"
+              # git pull origin "${EN_BRANCH#refs/heads/}"
+              echo "git pull --no-rebase origin '${EN_BRANCH#refs/heads/}'"
+              git pull --no-rebase origin "${EN_BRANCH#refs/heads/}"
               echo "2"
               # git merge --no-ff --no-edit "origin/${EN_BRANCH#refs/heads/}"
               echo "3"
