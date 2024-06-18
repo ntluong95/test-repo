@@ -32,7 +32,7 @@ jobs:
           LANGS=("fr" "es" "vn" "jp" "tr" "pt" "ru")  
           EN_BRANCH="${{ github.ref }}"
           VERSION_SUFFIX="${EN_BRANCH#refs/heads/handbook_}"
-          git config --global --get merge.ort
+          # git config --global --get merge.ort
 
           for lang in "${LANGS[@]}"; do
             TRANSLATION_BRANCH="handbook_${VERSION_SUFFIX/_en/_$lang}"
@@ -51,7 +51,7 @@ jobs:
 
               git status
               echo "1"
-              git pull --no-rebase --no-edit origin "${EN_BRANCH#refs/heads/}" --allow-unrelated-histories
+              git pull -s recursive -X theirs --no-rebase --no-edit origin "${EN_BRANCH#refs/heads/}" --allow-unrelated-histories
 
               # If merge conflict occurs, attempt to automatically resolve
               if git diff --quiet; then
