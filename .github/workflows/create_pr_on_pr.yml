@@ -49,10 +49,10 @@ jobs:
               echo "${EN_BRANCH#refs/heads/}"
               echo "${TRANSLATION_BRANCH}"
 
-              # git pull origin "${EN_BRANCH#refs/heads/}" --allow-unrelated-histories
-              git pull --no-rebase origin "${EN_BRANCH#refs/heads/}"
+              git pull origin "${EN_BRANCH#refs/heads/}"
+              # git pull --no-rebase origin "${EN_BRANCH#refs/heads/}"
               echo "2"
-              git merge --no-ff --no-edit "origin/${EN_BRANCH#refs/heads/}"
+              # git merge --no-ff --no-edit "origin/${EN_BRANCH#refs/heads/}"
               echo "3"
               git push origin "${TRANSLATION_BRANCH}"
               
