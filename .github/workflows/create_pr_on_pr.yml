@@ -49,7 +49,7 @@ jobs:
               echo "${EN_BRANCH#refs/heads/}"
               echo "${TRANSLATION_BRANCH}"
 
-              # git pull origin "${EN_BRANCH#refs/heads/}"
+              git pull origin "${EN_BRANCH#refs/heads/}" --allow-unrelated-histories
               echo "2"
               git merge --no-ff --no-edit "origin/${EN_BRANCH#refs/heads/}"
               echo "3"
