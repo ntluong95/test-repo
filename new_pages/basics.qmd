@@ -308,7 +308,7 @@ sqrt(49)
 
 Add new example of basic function in R
 ```{r basics_function_log}
-log(100)
+log(1000)
 ```
 
 
