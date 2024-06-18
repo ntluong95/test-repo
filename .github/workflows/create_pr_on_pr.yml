@@ -24,12 +24,16 @@ jobs:
           sudo apt update
           sudo apt install -y gh
 
+      - name: Fetch all branches
+        run: git fetch --all
+
       - name: Create and update language branches and PRs
         run: |
           LANGS=("fr" "es" "vn" "jp" "tr" "pt" "ru")  
           EN_BRANCH="${{ github.ref }}"
           VERSION_SUFFIX="${EN_BRANCH#refs/heads/handbook_}"
 
+          git show --format=%H -s origin/main
 
           for lang in "${LANGS[@]}"; do
             TRANSLATION_BRANCH="handbook_${VERSION_SUFFIX/_en/_$lang}"
