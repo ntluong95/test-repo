@@ -213,7 +213,7 @@ babelquarto:
     text: "English"
 
   mainlanguage: 'en'
-  languages: ['fr']  #'de'  fr, , 'es', 'vn', 'jp', 'pt', 'tr', 'ru'
+  languages: ['vn']  #'de'  fr, , 'es', 'vn', 'jp', 'pt', 'tr', 'ru'
 
 title-vn: Cẩm nang dịch tễ học với R
 title-fr: Le Epi R Handbook
