@@ -39,6 +39,7 @@ jobs:
             # Check if the translation branch exists
             if git ls-remote --exit-code --heads origin "${TRANSLATION_BRANCH}"; then
               echo "Branch ${TRANSLATION_BRANCH} exists. Checking out and rebasing with ${EN_BRANCH}"
+              git fetch --prune
               git checkout "${TRANSLATION_BRANCH}"
 
               #git pull origin "${TRANSLATION_BRANCH}"
@@ -47,9 +48,10 @@ jobs:
               echo "1"
               echo "${EN_BRANCH#refs/heads/}"
               echo "${TRANSLATION_BRANCH}"
-              git pull origin "${EN_BRANCH#refs/heads/}"
+
+              # git pull origin "${EN_BRANCH#refs/heads/}"
               echo "2"
-              git merge "${EN_BRANCH#refs/heads/}" --no-ff --no-edit
+              git merge --no-ff --no-edit "origin/${EN_BRANCH#refs/heads/}"
               echo "3"
               git push origin "${TRANSLATION_BRANCH}"
               
