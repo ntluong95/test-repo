@@ -24,9 +24,6 @@ jobs:
           sudo apt update
           sudo apt install -y gh
 
-      - name: Fetch all branches
-        run: git fetch --all
-
       - name: Create and update language branches and PRs
         run: |
           LANGS=("fr" "es" "vn" "jp" "tr" "pt" "ru")  
@@ -62,14 +59,12 @@ jobs:
             echo "Commits on the English branch that were made after the latest commit on the translation branch: $commits at $latest_commit_date"
 
             latest_commit_en_branch=$(git show --format=%H -s ${EN_BRANCH})
-            echo "main"
-            git show --format=%H -s origin/main
             latest_commit_main=$(git show --format=%H -s origin/main)
             echo $latest_commit_en_branch
             echo $latest_commit_main
 
             # Check if there are new commits
-            if [ -z "$commits" ] || [$latest_commit_en_branch == $latest_commit_main]; then
+            if [ -z "$commits" ] || ["$latest_commit_en_branch" == "$latest_commit_main"]; then
               echo "No new commits to include in PR for ${TRANSLATION_BRANCH}"
               continue
             fi
