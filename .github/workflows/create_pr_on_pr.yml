@@ -55,11 +55,15 @@ jobs:
             # Get the date of the latest commit on the translation branch
             latest_commit_date=$(git show -s --format=%ci ${TRANSLATION_BRANCH})
             # commits=$(gh api repos/${{ github.repository }}/commits --paginate --jq ".[] | select(.commit.author.date > \"$latest_commit_date\") | .sha")
+            
             commits=$(git log origin/"${EN_BRANCH#refs/heads/}" --since="$latest_commit_date" --pretty=format:"%H")
             echo "Commits on the English branch that were made after the latest commit on the translation branch: $commits at $latest_commit_date"
-            
+
+            latest_commit_en_branch=$(git show --format=%H -s ${EN_BRANCH})
+            latest_commit_main=$(git show --format=%H -s main)
+
             # Check if there are new commits
-            if [ -z "$commits" ]; then
+            if [ -z "$commits" ] || [$latest_commit_en_branch == $latest_commit_main]; then
               echo "No new commits to include in PR for ${TRANSLATION_BRANCH}"
               continue
             fi
