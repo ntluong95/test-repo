@@ -49,7 +49,19 @@ jobs:
               echo "${TRANSLATION_BRANCH}"
 
               git status
-              git pull --rebase origin "${EN_BRANCH#refs/heads/}" --allow-unrelated-histories
+              git pull --no-rebase --no-edit origin "${EN_BRANCH#refs/heads/}" --allow-unrelated-histories
+
+              # If merge conflict occurs, attempt to automatically resolve
+              if git diff --quiet; then
+                echo "No merge conflict, proceeding with automatic merge commit"
+                # git merge --no-ff --no-edit "origin/${EN_BRANCH#refs/heads/}"
+              else
+                echo "Merge conflict detected, attempting automatic resolution"
+                git checkout --theirs .  # Automatically choose "theirs" version of conflicted files
+                git add .
+                git commit -m "Automatically resolved merge conflict"
+              fi
+
               git push origin "${TRANSLATION_BRANCH}"
               
             else
