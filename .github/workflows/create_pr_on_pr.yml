@@ -29,7 +29,7 @@ jobs:
           LANGS=("fr" "es" "vn" "jp" "tr" "pt" "ru")  
           EN_BRANCH="${{ github.ref }}"
           VERSION_SUFFIX="${EN_BRANCH#refs/heads/handbook_}"
-          
+          git fetch --all
 
           for lang in "${LANGS[@]}"; do
             TRANSLATION_BRANCH="handbook_${VERSION_SUFFIX/_en/_$lang}"
