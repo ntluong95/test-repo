@@ -13,6 +13,10 @@ jobs:
 
     env:
       RENV_PATHS_ROOT: ~/.cache/R/renv
+      R_LIBS_USER: /home/runner/work/_temp/Library
+      TZ: UTC
+      _R_CHECK_SYSTEM_CLOCK_: FALSE
+      NOT_CRAN: true
       
     steps:
       - name: Check out repository
