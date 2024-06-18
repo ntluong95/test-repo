@@ -60,7 +60,7 @@ jobs:
             echo "Commits on the English branch that were made after the latest commit on the translation branch: $commits at $latest_commit_date"
 
             latest_commit_en_branch=$(git show --format=%H -s ${EN_BRANCH})
-            latest_commit_main=$(git show --format=%H -s main)
+            latest_commit_main=$(git show --format=%H -s refs/heads/main)
 
             # Check if there are new commits
             if [ -z "$commits" ] || [$latest_commit_en_branch == $latest_commit_main]; then
