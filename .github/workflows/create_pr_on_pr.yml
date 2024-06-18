@@ -40,14 +40,15 @@ jobs:
             if git ls-remote --exit-code --heads origin "${TRANSLATION_BRANCH}"; then
               echo "Branch ${TRANSLATION_BRANCH} exists. Checking out and rebasing with ${EN_BRANCH}"
               git checkout "${TRANSLATION_BRANCH}"
-              git pull origin "${TRANSLATION_BRANCH}"
-              git rebase "origin/${EN_BRANCH#refs/heads/}"
+              #git pull origin "${TRANSLATION_BRANCH}"
+              #git rebase "origin/${EN_BRANCH#refs/heads/}"
+              git merge --no-ff --no-edit $EN_BRANCH
+              git push origin "${TRANSLATION_BRANCH}"
               
             else
               echo "Branch ${TRANSLATION_BRANCH} does not exist. Creating new branch from ${EN_BRANCH}."
               git checkout -b "${TRANSLATION_BRANCH}"
               git pull origin "${EN_BRANCH#refs/heads/}"
-              
             fi
             
             # Force push the changes to the remote repository
