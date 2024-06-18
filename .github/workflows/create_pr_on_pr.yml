@@ -44,8 +44,13 @@ jobs:
               #git pull origin "${TRANSLATION_BRANCH}"
               #git rebase "origin/${EN_BRANCH#refs/heads/}"
               
+              echo "1"
+              echo "${EN_BRANCH#refs/heads/}"
+              echo "${TRANSLATION_BRANCH}"
               git pull origin "${EN_BRANCH#refs/heads/}"
+              echo "2"
               git merge "${EN_BRANCH#refs/heads/}" --no-ff --no-edit
+              echo "3"
               git push origin "${TRANSLATION_BRANCH}"
               
             else
