@@ -20,11 +20,15 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libxml2-dev libssl-dev libcurl4-openssl-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev
+          sudo apt-get install -y libxml2-dev libssl-dev libcurl4-openssl-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev libglpk-dev
+
+      - name: Install igraph separately
+        run: Rscript -e 'install.packages("igraph", repos="http://cran.r-project.org")'
 
       - name: Restore R packages with renv
         run: |
           Rscript -e 'install.packages("renv")'
+          Rscript -e 'install.packages("Rglpk")'
           # Ignore igraph in renv
           Rscript -e 'renv::settings$ignored.packages("igraph")'
           Rscript -e 'renv::restore()'
