@@ -13,7 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     env:
-      RENV_PATHS_ROOT: ~/.local/share/renv
+      # Old RENV_PATHS_ROOT: ~/.local/share/renv
+      RENV_PATHS_ROOT: ~/.cache/R/renv
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       
     steps:
@@ -25,35 +26,44 @@ jobs:
         with:
           r-version: '4.3.2'
 
-      - name: Install system dependencies
+      - name: "Setup pandoc"
+        uses: r-lib/actions/setup-pandoc@v2
+
+      - name: Install system dependencies and R packages
         run: |
           sudo apt-get update
           sudo apt-get install -y libxml2-dev libssl-dev libcurl4-openssl-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev libglpk-dev r-cran-rjava r-base-dev openjdk-11-jdk gdal-bin libgdal-dev
+          sudo R CMD javareconf
+          # Rscript -e 'install.packages(c("igraph", "Rglpk", "rJava"), repos="http://cran.r-project.org")'
 
-      - name: Set RENV_PATHS_ROOT
-        run: echo "RENV_PATHS_ROOT=${{ runner.temp }}/renv" >> $GITHUB_ENV
+      # - name: Set RENV_PATHS_ROOT
+      #   run: echo "RENV_PATHS_ROOT=${{ runner.temp }}/renv" >> $GITHUB_ENV
 
-      - name: Get R version
-        id: get-version
-        run: |
-          echo "os-version=$(uname -s)-$(uname -r)" >> $GITHUB_ENV
-          echo "r-version=$(R --version | grep 'R version' | awk '{print $3}')" >> $GITHUB_ENV
-        shell: bash
+      # - name: Get R version
+      #   id: get-version
+      #   run: |
+      #     echo "os-version=$(uname -s)-$(uname -r)" >> $GITHUB_ENV
+      #     echo "r-version=$(R --version | grep 'R version' | awk '{print $3}')" >> $GITHUB_ENV
+      #   shell: bash
+
+      - name: Cache packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.RENV_PATHS_ROOT  }}
+          key: ${{ runner.os }}-renv-${{ hashFiles('renv.lock') }}
+          restore-keys: ${{ runner.os }}-renv-
       
       - name: Set up renv
         uses: r-lib/actions/setup-renv@v2
         with:
           cache-version: 1
 
-      - name: Restore R package cache
+      - name: Save R package cache
         uses: actions/cache@v3
         with:
           path: ${{ env.RENV_PATHS_ROOT }}
-          key: ${{ runner.os }}-renv-${{ hashFiles('renv.lock') }}-${{ steps.get-version.outputs['r-version'] }}
-          restore-keys: ${{ runner.os }}-renv-${{ steps.get-version.outputs['r-version'] }}-
-
-      - name: Install R packages
-        run: Rscript -e 'renv::restore()'
+          key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
+          restore-keys: ${{ runner.os }}-renv-      
 
       - name: Install quarto
         uses: quarto-dev/quarto-actions/setup@v2
