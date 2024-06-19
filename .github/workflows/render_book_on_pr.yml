@@ -25,16 +25,10 @@ jobs:
         with:
           r-version: '4.3.2'
 
-      - name: "Install curl for Bioconductor"
-        run: |
-          sudo apt -y install libcurl4-openssl-dev  
-
-      - name: Install system dependencies and R packages
+      - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libxml2-dev libssl-dev libcurl4-openssl-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev libglpk-dev r-cran-rjava r-base-dev openjdk-11-jdk
-          sudo R CMD javareconf
-          Rscript -e 'install.packages(c("igraph", "Rglpk", "rJava"), repos="http://cran.r-project.org")'
+          sudo apt-get install -y libxml2-dev libssl-dev libcurl4-openssl-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev libglpk-dev r-cran-rjava r-base-dev openjdk-11-jdk gdal-bin libgdal-dev
 
       - name: Set RENV_PATHS_ROOT
         run: echo "RENV_PATHS_ROOT=${{ runner.temp }}/renv" >> $GITHUB_ENV
@@ -54,9 +48,12 @@ jobs:
       - name: Restore R package cache
         uses: actions/cache@v3
         with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
-          restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
+          path: ${{ env.RENV_PATHS_ROOT }}
+          key: ${{ runner.os }}-renv-${{ hashFiles('renv.lock') }}-${{ steps.get-version.outputs['r-version'] }}
+          restore-keys: ${{ runner.os }}-renv-${{ steps.get-version.outputs['r-version'] }}-
+
+      - name: Install R packages
+        run: Rscript -e 'renv::restore()'
 
       - name: Install quarto
         uses: quarto-dev/quarto-actions/setup@v2
