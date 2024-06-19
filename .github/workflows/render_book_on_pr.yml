@@ -13,10 +13,6 @@ jobs:
 
     env:
       RENV_PATHS_ROOT: ~/.cache/R/renv
-      R_LIBS_USER: /home/runner/work/_temp/Library
-      TZ: UTC
-      _R_CHECK_SYSTEM_CLOCK_: FALSE
-      NOT_CRAN: true
       
     steps:
       - name: Check out repository
@@ -27,37 +23,35 @@ jobs:
         with:
           r-version: '4.3.2'
 
-      - name: Cache R packages
-        uses: actions/cache@v2
-        with:
-          path: ${{ env.RENV_PATHS_ROOT }}
-          key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-renv-
-
-      - name: Set up renv
-        uses: r-lib/actions/setup-renv@v2
-
-      - name: Install system dependencies
+      - name: Install system dependencies and R packages
         run: |
           sudo apt-get update
           sudo apt-get install -y libxml2-dev libssl-dev libcurl4-openssl-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev libglpk-dev r-cran-rjava
+          Rscript -e 'install.packages(c("igraph", "Rglpk", "rJava"), repos="http://cran.r-project.org")'
 
-      - name: Install igraph separately
-        run: Rscript -e 'install.packages("igraph", repos="http://cran.r-project.org")'
+      - name: Set RENV_PATHS_ROOT
+        run: echo "RENV_PATHS_ROOT=${{ runner.temp }}/renv" >> $GITHUB_ENV
 
-      - name: Install Rglpk separately
-        run: Rscript -e 'install.packages("Rglpk", repos="http://cran.r-project.org")'
-
-      - name: Restore R packages with renv
+      - name: Get R version
+        id: get-version
         run: |
-          Rscript -e 'install.packages("renv")'
-          Rscript -e 'install.packages("rJava")'
-          Rscript -e 'renv::settings$ignored.packages(c("igraph", "Rglpk"))'
-          Rscript -e 'renv::restore()'
+          echo "os-version=$(uname -s)-$(uname -r)" >> $GITHUB_ENV
+          echo "r-version=$(R --version | grep 'R version' | awk '{print $3}')" >> $GITHUB_ENV
+        shell: bash
 
-      - name: Render Book
-        run: Rscript -e 'source("quarto_runfile.R")'
+      - name: Cache R packages
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.RENV_PATHS_ROOT }}
+          key: ${{ env.os-version }}-${{ env.r-version }}-${{ hashFiles('renv.lock') }}
+          restore-keys: |
+            ${{ env.os-version }}-${{ env.r-version }}-
+      
+      - name: Set up renv
+        uses: r-lib/actions/setup-renv@v2
+
+      - name: Render the book
+        run: Rscript -e 'babelquarto::render_book()'
 
       - name: Publish to Netlify
         uses: quarto-dev/quarto-actions/publish@v2
