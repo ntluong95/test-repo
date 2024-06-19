@@ -1,6 +1,7 @@
 name: Render Book on PR to Main
 
 on:
+  workflow_dispatch:  # Allows the workflow to be triggered manually
   pull_request_target:
     types: [closed]
     branches:
@@ -10,9 +11,10 @@ jobs:
   build-and-render:
     if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'handbook_v')
     runs-on: ubuntu-latest
-
+    continue-on-error: true
     env:
-      RENV_PATHS_ROOT: ~/.cache/R/renv
+      RENV_PATHS_ROOT: ~/.local/share/renv
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       
     steps:
       - name: Check out repository
@@ -23,10 +25,15 @@ jobs:
         with:
           r-version: '4.3.2'
 
+      - name: "Install curl for Bioconductor"
+        run: |
+          sudo apt -y install libcurl4-openssl-dev  
+
       - name: Install system dependencies and R packages
         run: |
           sudo apt-get update
-          sudo apt-get install -y libxml2-dev libssl-dev libcurl4-openssl-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev libglpk-dev r-cran-rjava
+          sudo apt-get install -y libxml2-dev libssl-dev libcurl4-openssl-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev libglpk-dev r-cran-rjava r-base-dev openjdk-11-jdk
+          sudo R CMD javareconf
           Rscript -e 'install.packages(c("igraph", "Rglpk", "rJava"), repos="http://cran.r-project.org")'
 
       - name: Set RENV_PATHS_ROOT
@@ -38,20 +45,42 @@ jobs:
           echo "os-version=$(uname -s)-$(uname -r)" >> $GITHUB_ENV
           echo "r-version=$(R --version | grep 'R version' | awk '{print $3}')" >> $GITHUB_ENV
         shell: bash
-
-      - name: Cache R packages
-        uses: actions/cache@v3
-        with:
-          path: ${{ env.RENV_PATHS_ROOT }}
-          key: ${{ env.os-version }}-${{ env.r-version }}-${{ hashFiles('renv.lock') }}
-          restore-keys: |
-            ${{ env.os-version }}-${{ env.r-version }}-
       
       - name: Set up renv
         uses: r-lib/actions/setup-renv@v2
+        with:
+          cache-version: 1
+
+      - name: Restore R package cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
+
+      - name: Install quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: 1.4.550
 
       - name: Render the book
         run: Rscript -e 'babelquarto::render_book()'
+
+      - name: Commit results to main branch
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add .
+          git commit -m "CI added changes `date +'%Y-%m-%d %H:%M:%S'`" || echo "No changes to commit"
+          git push origin || echo "No changes to commit"
+
+      - name: Push changes # push the output folder to your repo
+        uses: ad-m/github-push-action@master
+        with:
+          branch: main
+          github_token: ${{ secrets.API_TOKEN_GITHUB }}
+          # WORKFLOW_GITHUB_TOKEN
+          force: true    
 
       - name: Publish to Netlify
         uses: quarto-dev/quarto-actions/publish@v2
