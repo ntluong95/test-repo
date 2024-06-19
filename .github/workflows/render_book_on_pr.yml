@@ -46,6 +46,12 @@ jobs:
       #     echo "r-version=$(R --version | grep 'R version' | awk '{print $3}')" >> $GITHUB_ENV
       #   shell: bash
 
+      - name: Install Bioconductor packages
+        run: |
+          Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")'
+          Rscript -e 'BiocManager::install(version = "3.18")'
+          Rscript -e 'BiocManager::install(c("ggtree", "treeio"))'
+      
       - name: Cache packages
         uses: actions/cache@v4
         with:
