@@ -24,7 +24,7 @@ jobs:
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
         with:
-          r-version: '4.3.2'
+          r-version: '4.4.0'
 
       - name: "Setup pandoc"
         uses: r-lib/actions/setup-pandoc@v2
@@ -49,8 +49,7 @@ jobs:
       - name: Install Bioconductor packages
         run: |
           Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")'
-          Rscript -e 'BiocManager::install(version = "3.18")'
-          Rscript -e 'BiocManager::install(c("ggtree", "treeio"))'
+          Rscript -e 'BiocManager::install("ggtree")'
       
       - name: Cache packages
         uses: actions/cache@v4
