@@ -17,6 +17,10 @@ jobs:
     #   RENV_PATHS_ROOT: ~/.cache/R/renv
     #   R_LIBS_USER: ~/.cache/R/renv/Library
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+<<<<<<< HEAD
+=======
+
+>>>>>>> e5b3c3c35da3aa5c158dbae864733d0e73b8c70e
       
     steps:
       - name: Check out repository
