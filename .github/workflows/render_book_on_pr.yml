@@ -42,18 +42,20 @@ jobs:
           sudo R CMD javareconf
           # Rscript -e 'install.packages(c("igraph", "Rglpk", "rJava"), repos="http://cran.r-project.org")'
 
+
+      - name: Install Bioconductor packages
+        run: |
+          Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")'
+          Rscript -e 'BiocManager::install("ggtree")' 
+
+      - name: Capture new packages installed into renv.lock
+        run: |
+          Rscript -e 'renv::snapshot()'  
+          
       - name: Set up renv
         uses: r-lib/actions/setup-renv@v2
         with:
           cache-version: 1
-
-      # - name: Install Bioconductor packages
-      #   run: |
-      #     Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")'
-      #     Rscript -e 'BiocManager::install("ggtree")' 
-
-
-
 
       # - name: Render the book
       #   run: Rscript -e 'babelquarto::render_book()'
