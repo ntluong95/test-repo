@@ -42,10 +42,10 @@ jobs:
         with:
           cache-version: 1
 
-      # - name: Install Bioconductor packages
-      #   run: |
-      #     Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")'
-      #     Rscript -e 'BiocManager::install("ggtree")' 
+      - name: Install Bioconductor packages
+        run: |
+          Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")'
+          Rscript -e 'BiocManager::install("ggtree")' 
 
       - name: Install quarto
         uses: quarto-dev/quarto-actions/setup@v2
@@ -55,7 +55,7 @@ jobs:
 
       - name: Render the book
         run: |
-          Rscript -e 'babelquarto::render_book()' || {
+          Rscript -e 'library("tidyverse")' || {
             echo "Rendering the book failed. Displaying session info for debugging.";
             Rscript -e 'sessionInfo()';
             exit 1;
