@@ -12,10 +12,11 @@ jobs:
     if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'handbook_v')
     runs-on: ubuntu-latest
     continue-on-error: true
-    env:
-      # Old RENV_PATHS_ROOT: ~/.local/share/renv
-      RENV_PATHS_ROOT: ~/.cache/R/renv
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    # env:
+    #   # Old RENV_PATHS_ROOT: ~/.local/share/renv
+    #   RENV_PATHS_ROOT: ~/.cache/R/renv
+    #   R_LIBS_USER: ~/.cache/R/renv/Library
+    #   GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       
     steps:
       - name: Check out repository
@@ -36,44 +37,23 @@ jobs:
           sudo R CMD javareconf
           # Rscript -e 'install.packages(c("igraph", "Rglpk", "rJava"), repos="http://cran.r-project.org")'
 
-      # - name: Set RENV_PATHS_ROOT
-      #   run: echo "RENV_PATHS_ROOT=${{ runner.temp }}/renv" >> $GITHUB_ENV
-
-      # - name: Get R version
-      #   id: get-version
-      #   run: |
-      #     echo "os-version=$(uname -s)-$(uname -r)" >> $GITHUB_ENV
-      #     echo "r-version=$(R --version | grep 'R version' | awk '{print $3}')" >> $GITHUB_ENV
-      #   shell: bash
-
-      - name: Install Bioconductor packages
-        run: |
-          Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")'
-          Rscript -e 'BiocManager::install("ggtree")'
-      
-      - name: Cache packages
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.RENV_PATHS_ROOT  }}
-          key: ${{ runner.os }}-renv-${{ hashFiles('renv.lock') }}
-          restore-keys: ${{ runner.os }}-renv-
-      
       - name: Set up renv
         uses: r-lib/actions/setup-renv@v2
         with:
           cache-version: 1
 
-      - name: Save R package cache
-        uses: actions/cache@v3
-        with:
-          path: ${{ env.RENV_PATHS_ROOT }}
-          key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
-          restore-keys: ${{ runner.os }}-renv-      
+      - name: Install Bioconductor packages
+        run: |
+          Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")'
+          Rscript -e 'BiocManager::install("ggtree")' 
 
       - name: Install quarto
         uses: quarto-dev/quarto-actions/setup@v2
         with:
           version: 1.4.550
+
+      - name: Restore renv environment
+        run: Rscript -e 'renv::restore()'
 
       - name: Render the book
         run: Rscript -e 'babelquarto::render_book()'
