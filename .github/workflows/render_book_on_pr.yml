@@ -17,7 +17,6 @@ jobs:
     #   RENV_PATHS_ROOT: ~/.cache/R/renv
     #   R_LIBS_USER: ~/.cache/R/renv/Library
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-
       
     steps:
       - name: Check out repository
@@ -69,7 +68,7 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           branch: main
-          github_token: ${{ secrets.API_TOKEN_GITHUB }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           # WORKFLOW_GITHUB_TOKEN
           force: true    
 
