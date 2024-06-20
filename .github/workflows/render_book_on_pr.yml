@@ -42,10 +42,10 @@ jobs:
         with:
           cache-version: 1
 
-      - name: Install Bioconductor packages
-        run: |
-          Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")'
-          Rscript -e 'BiocManager::install("ggtree")' 
+      # - name: Install Bioconductor packages
+      #   run: |
+      #     Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")'
+      #     Rscript -e 'BiocManager::install("ggtree")' 
 
       - name: Install quarto
         uses: quarto-dev/quarto-actions/setup@v2
