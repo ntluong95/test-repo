@@ -27,6 +27,11 @@ jobs:
         with:
           r-version: '4.4.0'
 
+      - name: Install quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: 1.4.550          
+
       - name: "Setup pandoc"
         uses: r-lib/actions/setup-pandoc@v2
 
@@ -42,24 +47,16 @@ jobs:
         with:
           cache-version: 1
 
-      - name: Install Bioconductor packages
-        run: |
-          Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")'
-          Rscript -e 'BiocManager::install("ggtree")' 
-
-      - name: Install quarto
-        uses: quarto-dev/quarto-actions/setup@v2
-        with:
-          version: 1.4.550
+      # - name: Install Bioconductor packages
+      #   run: |
+      #     Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")'
+      #     Rscript -e 'BiocManager::install("ggtree")' 
 
 
-      - name: Render the book
-        run: |
-          Rscript -e 'library("tidyverse")' || {
-            echo "Rendering the book failed. Displaying session info for debugging.";
-            Rscript -e 'sessionInfo()';
-            exit 1;
-          }
+
+
+      # - name: Render the book
+      #   run: Rscript -e 'babelquarto::render_book()'
 
       - name: Commit results to main branch
         run: |
