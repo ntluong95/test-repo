@@ -27,48 +27,33 @@ jobs:
         with:
           r-version: '4.4.0'
 
-      - name: Install quarto
-        uses: quarto-dev/quarto-actions/setup@v2
-        with:
-          version: 1.4.550          
-
       - name: "Setup pandoc"
         uses: r-lib/actions/setup-pandoc@v2
 
-
+      - name: Install Bioconductor packages
+        run: |
+          Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")'
+          Rscript -e 'BiocManager::install("ggtree")'         
 
       - name: Install system dependencies and R packages
         run: |
           sudo apt-get update
           sudo apt-get install -y libcurl4-openssl-dev libxml2-dev libssl-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev libglpk-dev r-cran-rjava r-base-dev openjdk-11-jdk gdal-bin libgdal-dev libxslt1-dev libgit2-dev libgeos-dev libproj-dev libudunits2-dev libcairo2-dev libxt-dev libmagick++-dev libpoppler-cpp-dev libpq-dev libmysqlclient-dev libsqlite3-dev libssh2-1-dev libgmp3-dev libmpfr-dev libprotobuf-dev protobuf-compiler libgl1-mesa-dev libglu1-mesa-dev libpoppler-glib-dev libtbb-dev libsodium-dev libv8-dev libnetcdf-dev netcdf-bin libjq-dev libharfbuzz-dev libfribidi-dev libnode-dev jq
           sudo R CMD javareconf
-          # Rscript -e 'install.packages(c("igraph", "Rglpk", "rJava"), repos="http://cran.r-project.org")'
-        if: steps.cache-apt.outputs.cache-hit != 'true'
-
-      - name: Install Bioconductor packages
-        run: |
-          Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")'
-          Rscript -e 'BiocManager::install("ggtree")' 
-
           
       - name: Set up renv
         uses: r-lib/actions/setup-renv@v2
         with:
-          cache-version: 1
+          cache-version: 2
 
+      - name: Install quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: 1.4.550
 
-      # - name: Capture new packages installed into renv.lock
-      #   run: |
-      #     Rscript -e 'renv::snapshot()'            
 
       # - name: Render the book
       #   run: Rscript -e 'babelquarto::render_book()'
-
-      # - name: Run basic functions
-      #   run: Rscript -e 'renv::activate()'      
-
-      # - name: Run basic functions
-      #   run: Rscript -e 'library("tidyverse")'
 
       - name: Commit results to main branch
         run: |
@@ -77,7 +62,6 @@ jobs:
           git add .
           git commit -m "CI added changes `date +'%Y-%m-%d %H:%M:%S'`" || echo "No changes to commit"
           git push origin || echo "No changes to commit"
-
       - name: Push changes # push the output folder to your repo
         uses: ad-m/github-push-action@master
         with:
@@ -86,8 +70,10 @@ jobs:
           # WORKFLOW_GITHUB_TOKEN
           force: true    
 
+
       # - name: Publish to Netlify
       #   uses: quarto-dev/quarto-actions/publish@v2
       #   with:
       #     target: netlify
       #     NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+
