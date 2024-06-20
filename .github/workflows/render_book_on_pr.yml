@@ -43,10 +43,10 @@ jobs:
           # Rscript -e 'install.packages(c("igraph", "Rglpk", "rJava"), repos="http://cran.r-project.org")'
 
 
-      - name: Install Bioconductor packages
-        run: |
-          Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")'
-          Rscript -e 'BiocManager::install("ggtree")' 
+      # - name: Install Bioconductor packages
+      #   run: |
+      #     Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")'
+      #     Rscript -e 'BiocManager::install("ggtree")' 
 
       - name: Capture new packages installed into renv.lock
         run: |
@@ -59,6 +59,9 @@ jobs:
 
       # - name: Render the book
       #   run: Rscript -e 'babelquarto::render_book()'
+
+      - name: Run basic functions
+        run: Rscript -e 'renv::activate()'      
 
       - name: Run basic functions
         run: Rscript -e 'library("tidyverse")'
