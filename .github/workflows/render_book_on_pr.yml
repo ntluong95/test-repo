@@ -54,7 +54,12 @@ jobs:
 
 
       - name: Render the book
-        run: Rscript -e 'babelquarto::render_book()'
+        run: |
+          Rscript -e 'babelquarto::render_book()' || {
+            echo "Rendering the book failed. Displaying session info for debugging.";
+            Rscript -e 'sessionInfo()';
+            exit 1;
+          }
 
       - name: Commit results to main branch
         run: |
