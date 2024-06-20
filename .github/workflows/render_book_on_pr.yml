@@ -48,9 +48,9 @@ jobs:
       #     Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")'
       #     Rscript -e 'BiocManager::install("ggtree")' 
 
-      - name: Capture new packages installed into renv.lock
-        run: |
-          Rscript -e 'renv::snapshot()'  
+      # - name: Capture new packages installed into renv.lock
+      #   run: |
+      #     Rscript -e 'renv::snapshot()'  
           
       - name: Set up renv
         uses: r-lib/actions/setup-renv@v2
