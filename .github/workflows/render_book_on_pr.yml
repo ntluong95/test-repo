@@ -35,16 +35,7 @@ jobs:
       - name: "Setup pandoc"
         uses: r-lib/actions/setup-pandoc@v2
 
-      - name: Cache APT packages
-        id: cache-apt
-        uses: actions/cache@v3
-        with:
-          path: |
-            /var/cache/apt
-            /var/lib/apt
-          key: ${{ runner.os }}-apt-${{ hashFiles('**/renv.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-apt-
+
 
       - name: Install system dependencies and R packages
         run: |
@@ -54,19 +45,21 @@ jobs:
           # Rscript -e 'install.packages(c("igraph", "Rglpk", "rJava"), repos="http://cran.r-project.org")'
         if: steps.cache-apt.outputs.cache-hit != 'true'
 
-      # - name: Install Bioconductor packages
-      #   run: |
-      #     Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")'
-      #     Rscript -e 'BiocManager::install("ggtree")' 
+      - name: Install Bioconductor packages
+        run: |
+          Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")'
+          Rscript -e 'BiocManager::install("ggtree")' 
 
-      # - name: Capture new packages installed into renv.lock
-      #   run: |
-      #     Rscript -e 'renv::snapshot()'  
           
       - name: Set up renv
         uses: r-lib/actions/setup-renv@v2
         with:
           cache-version: 1
+
+
+      # - name: Capture new packages installed into renv.lock
+      #   run: |
+      #     Rscript -e 'renv::snapshot()'            
 
       # - name: Render the book
       #   run: Rscript -e 'babelquarto::render_book()'
