@@ -12,11 +12,11 @@ jobs:
     if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'handbook_v')
     runs-on: ubuntu-latest
     continue-on-error: true
-    # env:
+    env:
     #   # Old RENV_PATHS_ROOT: ~/.local/share/renv
     #   RENV_PATHS_ROOT: ~/.cache/R/renv
     #   R_LIBS_USER: ~/.cache/R/renv/Library
-    #   GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       
     steps:
       - name: Check out repository
