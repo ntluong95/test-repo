@@ -52,8 +52,10 @@ jobs:
           version: 1.4.550
 
 
-      - name: Render the book
-        run: Rscript -e 'babelquarto::render_book()'
+      # - name: Render the book
+      #   run: Rscript -e 'babelquarto::render_book()'
+
+      - uses: quarto-dev/quarto-actions/render@v2
 
       - name: Commit results to main branch
         run: |
