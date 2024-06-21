@@ -30,10 +30,10 @@ jobs:
       - name: "Setup pandoc"
         uses: r-lib/actions/setup-pandoc@v2
 
-      - name: Install Bioconductor packages
-        run: |
-          Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")'
-          Rscript -e 'BiocManager::install("ggtree")'         
+      # - name: Install Bioconductor packages
+      #   run: |
+      #     Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")'
+      #     Rscript -e 'BiocManager::install("ggtree")'         
 
       - name: Install system dependencies and R packages
         run: |
@@ -53,7 +53,7 @@ jobs:
 
 
       - name: Render the book
-        run: Rscript -e '.libpaths()'
+        run: Rscript -e 'getwd(); .libpaths()'
 
       - uses: quarto-dev/quarto-actions/render@v2
 
