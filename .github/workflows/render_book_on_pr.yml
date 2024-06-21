@@ -55,7 +55,7 @@ jobs:
       - name: Render the book
         run: Rscript -e 'getwd(); .libPaths()'
 
-      - uses: quarto-dev/quarto-actions/render@v2
+      # - uses: quarto-dev/quarto-actions/render@v2
 
       - name: Commit results to main branch
         run: |
