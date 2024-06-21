@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.4.0",
+    "Version": "4.3.2",
     "Repositories": [
       {
         "Name": "BioCsoft",
@@ -29,7 +29,7 @@
     ]
   },
   "Bioconductor": {
-    "Version": "3.19"
+    "Version": "3.18"
   },
   "Packages": {
     "BH": {
@@ -51,7 +51,7 @@
     },
     "BiocVersion": {
       "Package": "BiocVersion",
-      "Version": "3.19.1",
+      "Version": "3.18.1",
       "Source": "Bioconductor",
       "Requirements": [
         "R"
@@ -2911,34 +2911,6 @@
       ],
       "Hash": "c5ba8f5056487403a299b91984be86ca"
     },
-    "ggtree": {
-      "Package": "ggtree",
-      "Version": "3.10.0",
-      "Source": "Bioconductor",
-      "Requirements": [
-        "R",
-        "ape",
-        "aplot",
-        "cli",
-        "dplyr",
-        "ggfun",
-        "ggplot2",
-        "grid",
-        "magrittr",
-        "methods",
-        "purrr",
-        "rlang",
-        "scales",
-        "stats",
-        "tidyr",
-        "tidytree",
-        "treeio",
-        "utils",
-        "yulab.utils"
-      ],
-      "Hash": "f009cfa13d3884c01cc6300443e397eb"
-    },
-
     "ggupset": {
       "Package": "ggupset",
       "Version": "0.3.0",
