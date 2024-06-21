@@ -49,15 +49,6 @@
       ],
       "Hash": "d57e43105a1aa9cb54fdb4629725acb1"
     },
-    "BiocVersion": {
-      "Package": "BiocVersion",
-      "Version": "3.19",
-      "Source": "Bioconductor",
-      "Requirements": [
-        "R"
-      ],
-      "Hash": "2ecaed86684f5fae76ed5530f9d29c4a"
-    },
     "DBI": {
       "Package": "DBI",
       "Version": "1.2.2",
