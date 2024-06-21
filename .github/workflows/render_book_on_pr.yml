@@ -30,10 +30,6 @@ jobs:
       - name: "Setup pandoc"
         uses: r-lib/actions/setup-pandoc@v2
 
-      # - name: Install Bioconductor packages
-      #   run: |
-      #     Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")'
-      #     Rscript -e 'BiocManager::install("ggtree")'         
 
       - name: Install system dependencies and R packages
         run: |
@@ -45,6 +41,14 @@ jobs:
         uses: r-lib/actions/setup-renv@v2
         with:
           cache-version: 2
+
+      - name: Install Bioconductor packages
+        run: |
+          # Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")'
+          Rscript -e 'renv::install("BiocVersion")'
+          Rscript -e 'BiocManager::install("ggtree")'   
+          Rscript -e 'renv::snapshot()'      
+
 
       - name: Install quarto
         uses: quarto-dev/quarto-actions/setup@v2
