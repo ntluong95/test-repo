@@ -2937,7 +2937,7 @@
         "yulab.utils"
       ],
       "Hash": "f009cfa13d3884c01cc6300443e397eb"
-    }
+    },
     "ggupset": {
       "Package": "ggupset",
       "Version": "0.3.0",
