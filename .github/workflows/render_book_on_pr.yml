@@ -53,7 +53,7 @@ jobs:
 
 
       - name: Render the book
-        run: Rscript -e 'getwd(); .libpaths()'
+        run: Rscript -e 'getwd(); .libPaths()'
 
       - uses: quarto-dev/quarto-actions/render@v2
 
