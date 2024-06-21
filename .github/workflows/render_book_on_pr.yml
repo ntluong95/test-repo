@@ -42,12 +42,12 @@ jobs:
         with:
           cache-version: 2
 
-      - name: Install Bioconductor packages
-        run: |
-          # Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")'
-          # Rscript -e 'renv::install("BiocVersion")'
-          # Rscript -e 'BiocManager::install("ggtree")'   
-          Rscript -e 'renv::snapshot()'      
+      # - name: Install Bioconductor packages
+      #   run: |
+      #     # Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")'
+      #     # Rscript -e 'renv::install("BiocVersion")'
+      #     # Rscript -e 'BiocManager::install("ggtree")'   
+      #     Rscript -e 'renv::snapshot()'      
 
 
       - name: Install quarto
@@ -56,8 +56,8 @@ jobs:
           version: 1.4.550
 
 
-      - name: Render the book
-        run: Rscript -e 'getwd(); .libPaths()'
+      # - name: Render the book
+      #   run: Rscript -e 'getwd(); .libPaths()'
 
       # - uses: quarto-dev/quarto-actions/render@v2
 
