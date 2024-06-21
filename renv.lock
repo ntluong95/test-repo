@@ -51,7 +51,7 @@
     },
     "BiocVersion": {
       "Package": "BiocVersion",
-      "Version": "3.19.1",
+      "Version": "3.19",
       "Source": "Bioconductor",
       "Requirements": [
         "R"
@@ -2913,7 +2913,7 @@
     },
     "ggtree": {
       "Package": "ggtree",
-      "Version": "3.10.0",
+      "Version": "3.12.0",
       "Source": "Bioconductor",
       "Requirements": [
         "R",
