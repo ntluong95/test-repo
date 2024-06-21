@@ -310,7 +310,7 @@ Một ví dụ khác về hàm cơ bản trong ```{html}
 
 ```{r basics_function_log}
 
-log(100000)
+log(10000)
 
 ```
 
