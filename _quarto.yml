@@ -70,7 +70,7 @@ book:
     part-ru: "Основы"
     part-de: "Grundlagen"
     chapters:
-    - new_pages/basics.qmd
+    # - new_pages/basics.qmd
     - new_pages/transition_to_R.qmd
     - new_pages/packages_suggested.qmd
     - new_pages/r_projects.qmd
@@ -94,7 +94,7 @@ book:
     # - new_pages/pivoting.qmd
     # - new_pages/grouping.qmd
     # - new_pages/joining_matching.qmd
-    - new_pages/deduplication.qmd
+    # - new_pages/deduplication.qmd
     - new_pages/iteration.qmd
 
 
@@ -123,30 +123,30 @@ book:
   #   - new_pages/gis.qmd #done
 
 
-  # # DATA VIZ
-  # - part: "Data Visualization"
-  #   part-vn: "Trực quan hóa dữ liệu"
-  #   part-fr: "Visualisation des données"
-  #   part-es: "Visualización de datos"
-  #   part-jp: "データの可視化"
-  #   part-tr: "Veri Görselleştirme"
-  #   part-pt: "Visualização de Dados"
-  #   part-ru: "Визуализация данных"
-  #   part-de: "Datenvisualisierung"
-  #   chapters:
-  #   - new_pages/tables_presentation.qmd  #done
-  #   - new_pages/ggplot_basics.qmd #done
-  #   #new_pages/plot_continuous.qmd,
-  #   #new_pages/plot_discrete.qmd,
-  #   - new_pages/ggplot_tips.qmd #done
-  #   - new_pages/epicurves.qmd #done
-  #   - new_pages/age_pyramid.qmd #done
-  #   - new_pages/heatmaps.qmd   #done
-  #   - new_pages/diagrams.qmd  #done
-  #   - new_pages/combination_analysis.qmd #done
-  #   - new_pages/transmission_chains.qmd #done
-  #   - new_pages/phylogenetic_trees.qmd #done
-  #   - new_pages/interactive_plots.qmd #done
+  # DATA VIZ
+  - part: "Data Visualization"
+    part-vn: "Trực quan hóa dữ liệu"
+    part-fr: "Visualisation des données"
+    part-es: "Visualización de datos"
+    part-jp: "データの可視化"
+    part-tr: "Veri Görselleştirme"
+    part-pt: "Visualização de Dados"
+    part-ru: "Визуализация данных"
+    part-de: "Datenvisualisierung"
+    chapters:
+    # - new_pages/tables_presentation.qmd  #done
+    # - new_pages/ggplot_basics.qmd #done
+    # #new_pages/plot_continuous.qmd,
+    # #new_pages/plot_discrete.qmd,
+    # - new_pages/ggplot_tips.qmd #done
+    # - new_pages/epicurves.qmd #done
+    # - new_pages/age_pyramid.qmd #done
+    # - new_pages/heatmaps.qmd   #done
+    # - new_pages/diagrams.qmd  #done
+    - new_pages/combination_analysis.qmd #done
+    - new_pages/transmission_chains.qmd #done
+    # - new_pages/phylogenetic_trees.qmd #done
+    # - new_pages/interactive_plots.qmd #done
 
   # # REPORTS AND DASHBOARDS
   # - part: "Reports and dashboards"
