@@ -47,6 +47,7 @@ jobs:
           # Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")'
           # Rscript -e 'renv::install(renv::install("ggplot2@3.4.4"))'
           # Rscript -e 'renv::install("ggtree@3.10.0")'   
+          Rscript -e 'renv::install("ver")'   
           Rscript -e 'install.packages("babelquarto", repos = c("https://ropensci.r-universe.dev", "https://cloud.r-project.org"))'   
           Rscript -e 'install.packages("babeldown", repos = c("https://ropensci.r-universe.dev", "https://cloud.r-project.org"))'   
           Rscript -e 'renv::snapshot()'      
@@ -62,7 +63,7 @@ jobs:
       #   run: Rscript -e 'renv::snapshot(); names(installed.packages()[,3]); getwd(); .libPaths()'
 
       - name: Render the book
-        run: Rscript -e 'names(installed.packages()[,3]); babelquarto::render_book()'
+        run: Rscript -e 'here::here(); names(installed.packages()[,3]); babelquarto::render_book()'
 
       # - uses: quarto-dev/quarto-actions/render@v2
 
