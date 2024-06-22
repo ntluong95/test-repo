@@ -59,7 +59,7 @@ jobs:
 
 
       - name: Render the book
-        run: Rscript -e 'names(installed.packages()[,3]); getwd(); .libPaths()'
+        run: Rscript -e 'renv::snapshot(); names(installed.packages()[,3]); getwd(); .libPaths()'
 
       # - uses: quarto-dev/quarto-actions/render@v2
 
