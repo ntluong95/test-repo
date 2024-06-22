@@ -1,10 +1,10 @@
-# R Cơ bản {#basics}
+9# R Cơ bản {#basics}
 
 ```{r out.width = "100%", fig.align = "center", echo=F}
 knitr::include_graphics(here::here("images", "basics_header_close.png"))
 ```
 
-Chào mừng bạn!
+Chào mừng!
 
 Chương này sẽ mô tả những kỹ thuật cơ bản của R. Đây không phải là hướng dẫn sử dụng toàn diện, nhưng sẽ cung cấp những kiến thức cơ bản và có thể hữu ích trong việc làm mới hiểu biết của bạn. Phần [Tài nguyên học liệu](#learning) sẽ liên kết đến những hướng dẫn sử dụng R bao quát hơn.
 
