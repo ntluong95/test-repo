@@ -58,8 +58,11 @@ jobs:
           version: 1.4.550
 
 
+      # - name: Render the book
+      #   run: Rscript -e 'renv::snapshot(); names(installed.packages()[,3]); getwd(); .libPaths()'
+
       - name: Render the book
-        run: Rscript -e 'renv::snapshot(); names(installed.packages()[,3]); getwd(); .libPaths()'
+        run: Rscript -e 'babelquarto::render_book()'
 
       # - uses: quarto-dev/quarto-actions/render@v2
 
