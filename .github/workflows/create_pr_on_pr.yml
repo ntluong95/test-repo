@@ -35,19 +35,16 @@ jobs:
 
           for lang in "${LANGS[@]}"; do
             TRANSLATION_BRANCH="handbook_${VERSION_SUFFIX/_en/_$lang}"
+            git fetch --prune
+
+            # Ensure we have all history
+            git fetch --all
             
             # Check if the translation branch exists
             if git ls-remote --exit-code --heads origin "${TRANSLATION_BRANCH}"; then
               echo "Branch ${TRANSLATION_BRANCH} exists. Checking out and rebasing with ${EN_BRANCH}"
-              git fetch --prune
               git checkout "${TRANSLATION_BRANCH}"
-              
-              echo "${EN_BRANCH#refs/heads/}"
-              echo "${TRANSLATION_BRANCH}"
-
-              git status
               git pull -s recursive -X theirs --no-rebase --no-edit origin "${EN_BRANCH#refs/heads/}" --allow-unrelated-histories
-              git push origin "${TRANSLATION_BRANCH}"
               
             else
               echo "Branch ${TRANSLATION_BRANCH} does not exist. Creating new branch from ${EN_BRANCH}."
@@ -58,7 +55,7 @@ jobs:
             # Force push the changes to the remote repository
             git push origin "${TRANSLATION_BRANCH}" --force
 
-            #! Get the list of changed .qmd files: COMPARE WITH main branch
+            # Get the list of changed .qmd files compared with main branch
             changed_files=$(git diff --name-only origin/main "${TRANSLATION_BRANCH}" | grep '\.qmd$')
 
             if [ -z "$changed_files" ]; then
@@ -68,26 +65,17 @@ jobs:
 
             echo "Changed files: $changed_files"
             
+            # Get the date of the latest commit on the translation branch
+            latest_translation_commit_date=$(git log -1 --format=%ci "${TRANSLATION_BRANCH}")
             
-            # Get the date of the latest commit on the english branch
-            latest_commit_date=$(git show -s --format=%ci ${EN_BRANCH})
-            
-            echo "Commits on the English branch that were made after the latest commit on the translation branch at $latest_commit_date"
-            latest_commit_en_branch=$(git show --format=%H -s ${EN_BRANCH})
-            latest_commit_info=$(git log ${EN_BRANCH} --since="$latest_commit_date" --format="%H %s" --reverse)
-            commit_messages=$(echo "$latest_commit_info" | cut -d' ' -f2-)
-            latest_commit_main=$(git show --format=%H -s origin/main)
-            
-            echo $latest_commit_en_branch
-            echo $latest_commit_main
-            echo $latest_commit_info
+            # Get the list of commits on the English branch since the latest translation commit
+            latest_commits=$(git log ${EN_BRANCH} --since="${latest_translation_commit_date}" --format="%H")
 
-            # Check if there are new commits
-            if [ "$latest_commit_en_branch" == "$latest_commit_main" ]; then
+            if [ -z "$latest_commits" ]; then
               echo "No new commits to include in PR for ${TRANSLATION_BRANCH}"
               continue
             fi
-            
+
             # Check if a PR already exists for this branch
             PR_EXISTS=$(gh pr list --head "${TRANSLATION_BRANCH}" --state open --json number --jq length)
             if [ "$PR_EXISTS" -eq 0 ]; then
@@ -102,6 +90,18 @@ jobs:
 
             echo "Pull Request Number: $PR_NUMBER"
 
+            # Set the translator username based on language
+            case "$lang" in
+              "vn") TRANSLATOR_USERNAME="ntluong95" ;;
+              "fr") TRANSLATOR_USERNAME="fr-translator" ;;
+              "es") TRANSLATOR_USERNAME="es-translator" ;;
+              "jp") TRANSLATOR_USERNAME="jp-translator" ;;
+              "tr") TRANSLATOR_USERNAME="tr-translator" ;;
+              "pt") TRANSLATOR_USERNAME="pt-translator" ;;
+              "ru") TRANSLATOR_USERNAME="ru-translator" ;;
+              *) TRANSLATOR_USERNAME="translator" ;;
+            esac
+
             # Initialize new PR body
             new_pr_body="# Automated pull request for $lang handbook version ${VERSION_SUFFIX/_en/}"
             
@@ -109,25 +109,21 @@ jobs:
             IFS=$'\n' # Change the Internal Field Separator to newline for correct iteration over lines
             checkboxes=""
             for file in $changed_files; do
-              for commit in $latest_commit_en_branch; do
-              # checkboxes="$checkboxes- [ ] Chapter \`$file\` has new changes in the following commit(s) ($commits)."
-                checkboxes="$checkboxes- [ ] Chapter [\`$file\`](https://github.com/${{ github.repository }}/commit/$commit) has new changes in the following commit(s) "
-                
-
-                #! Mention a user in the PR description
-                case "$lang" in
-                  "vn") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish" ;;
-                  "fr") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish" ;;
-                  "es") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish" ;;
-                  "jp") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish" ;;
-                  "tr") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish" ;;
-                  "pt") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish" ;;
-                  "ru") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish" ;;
-                esac
-
-                checkboxes="$checkboxes"$'\n'"$checkbox"
-                
+              # Get the list of commits where the file changed
+              file_commits=""
+              for commit in $latest_commits; do
+                if git diff-tree --no-commit-id --name-only -r $commit | grep -q "$file"; then
+                  # Build the commit link
+                  commit_link="[\`${commit:0:7}\`](https://github.com/${{ github.repository }}/commit/$commit)"
+                  file_commits="$file_commits $commit_link"
+                fi
               done
+
+              if [ -n "$file_commits" ]; then
+                # Build the checkbox line
+                checkbox="- [ ] Chapter [\`$file\`](https://github.com/${{ github.repository }}/blob/${EN_BRANCH#refs/heads/}/$file) has new changes in the following commit(s):$file_commits @$TRANSLATOR_USERNAME, please review changes and check the box when you finish"
+                checkboxes="$checkboxes"$'\n'"$checkbox"
+              fi
             done
 
             if [ -n "$checkboxes" ]; then
@@ -135,10 +131,9 @@ jobs:
               new_pr_body="$new_pr_body"$'\n'"$checkboxes"
             fi
 
+            # Update the PR description
             gh api repos/${{ github.repository }}/issues/$PR_NUMBER --method PATCH --field body="$new_pr_body"
             
-
-
           done
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
