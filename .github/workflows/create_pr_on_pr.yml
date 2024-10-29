@@ -96,9 +96,11 @@ jobs:
             IFS=$'\n' # Change the Internal Field Separator to newline for correct iteration over lines
             checkboxes=""
             for file in $changed_files; do
-              for commit in $latest_commit_en_branch; do
+              for commit_info in $latest_commit_info; do
+                commit_hash=$(echo "$commit_info" | cut -d' ' -f1)
+                commit_message=$(echo "$commit_info" | cut -d' ' -f2-)
                 #commits=$(git log --oneline "${EN_BRANCH}" -- "$file" | awk '{print "#"$1}' | paste -s -d ', ' -)
-                checkboxes="$checkboxes- [ ] Chapter \`$file\` has new changes in the following commit(s) ((https://github.com/${{ github.repository }}/commit/$commit))."
+                checkboxes="$checkboxes- [ ] Chapter \`$file\` has new changes in the following commit(s) ([$commit_message](https://github.com/\${{ github.repository }}/commit/$commit_hash))."
               done
 
               #! Mention a user in the PR description
@@ -113,7 +115,6 @@ jobs:
                 "ru") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish" ;;
               esac
               checkboxes="$checkboxes \n"
-            done
 
 
             # # Retrieve the current PR description
