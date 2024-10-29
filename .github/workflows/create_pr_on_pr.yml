@@ -107,7 +107,7 @@ jobs:
             checkboxes=""
             for file in $changed_files; do
               #! List only new commits compared with the main branch
-              list_commits=$(git log origin/main..${TRANSLATION_BRANCH} --follow --pretty=format:"%H" -- $file)
+              list_commits=$(git log origin/main..${EN_BRANCH} --follow --pretty=format:"%H" -- $file)
               for commit in $latest_commit_en_branch; do
                 checkboxes="$checkboxes- [ ] Chapter [\`$file\`](https://github.com/${{ github.repository }}/commit/$commit) has new changes in the following commit(s): $list_commits. "
                 
