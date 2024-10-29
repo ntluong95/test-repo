@@ -129,7 +129,7 @@ jobs:
             current_pr_body=$(gh pr view $PR_NUMBER --json body --jq '.body')
 
             # Append checkboxes to the current PR description
-            new_pr_body=$(printf "%s\n%s - [ ]" "$current_pr_body" "$checkboxes")
+            new_pr_body=$(printf "%s\n%s" "- [ ]" "$current_pr_body" "$checkboxes")
 
             done
 
