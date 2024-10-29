@@ -20,7 +20,7 @@ pacman::p_load(apyramid)
 
 <!-- ======================================================= -->
 
-## Why use R?
+## Why use R? -> It is for testing purposes
 
 As stated on the [R project website](https://www.r-project.org/about.html), R is a programming language and environment for statistical computing and graphics. It is highly versatile, extendable, and community-driven.
 
