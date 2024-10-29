@@ -103,6 +103,7 @@ jobs:
             echo "Pull Request Number: $PR_NUMBER"
             
             # Add new commits as checkboxes to the PR description
+            IFS=$'\n' # Change the Internal Field Separator to newline for correct iteration over lines
             checkboxes=""
             for file in $changed_files; do
               # checkboxes="$checkboxes- [ ] Chapter \`$file\` has new changes in the following commit(s) ($commits)."
@@ -120,6 +121,7 @@ jobs:
               "pt") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish" ;;
               "ru") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish" ;;
             esac
+            checkboxes="$checkboxes\n"
 
 
             # Retrieve the current PR description
