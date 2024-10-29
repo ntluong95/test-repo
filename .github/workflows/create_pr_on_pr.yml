@@ -103,7 +103,7 @@ jobs:
             echo "Pull Request Number: $PR_NUMBER"
 
             # Initialize new PR body
-            new_pr_body="Automated pull request for $lang handbook version ${VERSION_SUFFIX/_en/}\n\n"
+            new_pr_body="Automated pull request for $lang handbook version ${VERSION_SUFFIX/_en/}"
             
             # Add new commits as checkboxes to the PR description
             IFS=$'\n' # Change the Internal Field Separator to newline for correct iteration over lines
@@ -111,8 +111,19 @@ jobs:
             for file in $changed_files; do
               for commit in $latest_commit_en_branch; do
               # checkboxes="$checkboxes- [ ] Chapter \`$file\` has new changes in the following commit(s) ($commits)."
-                checkboxes="$checkboxes- [ ] [\`$file\`](https://github.com/${{ github.repository }}/commit/$commit)"
+                checkboxes="$checkboxes- [ ] Chapter [\`$file\`](https://github.com/${{ github.repository }}/commit/$commit) has new changes in the following commit(s) "
                 checkboxes="$checkboxes"$'\n'"$checkbox"
+
+                #! Mention a user in the PR description
+                case "$lang" in
+                  "vn") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish" ;;
+                  "fr") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish" ;;
+                  "es") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish" ;;
+                  "jp") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish" ;;
+                  "tr") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish" ;;
+                  "pt") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish" ;;
+                  "ru") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish" ;;
+                esac
               done
             done
 
@@ -120,21 +131,6 @@ jobs:
               # Append the checkboxes to the new PR body
               new_pr_body="$new_pr_body"$'\n'"$checkboxes"
             fi
-
-          #! Mention a user in the PR description
-            case "$lang" in
-
-              "vn") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish" ;;
-              "fr") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish" ;;
-              "es") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish" ;;
-              "jp") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish" ;;
-              "tr") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish" ;;
-              "pt") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish" ;;
-              "ru") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish" ;;
-            esac
-
-
-
 
             gh api repos/${{ github.repository }}/issues/$PR_NUMBER --method PATCH --field body="$new_pr_body"
             
