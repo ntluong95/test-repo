@@ -152,6 +152,8 @@ To see which versions of R, RStudio, or packages were used when this Handbook as
 
 #### TinyTex {.unnumbered}
 
+New changes here
+
 TinyTex is a custom LaTeX distribution, useful when trying to produce PDFs from R.\
 See <https://yihui.org/tinytex/> for more informaton.
 
