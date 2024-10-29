@@ -109,7 +109,7 @@ jobs:
               #! List only new commits compared with the main branch, tail -n +2 to skip the first line of output from git log
               list_commits=$(git log origin/main..${TRANSLATION_BRANCH} --follow --pretty=format:"%H" -- $file | tail -n +2 | paste -sd, - | sed 's/,/, /g')
               for commit in $latest_commit_en_branch; do
-                checkboxes="$checkboxes- [ ] Chapter [\`$file\`](https://github.com/${{ github.repository }}/commits/${EN_BRANCH}/$file) has new changes in the following commit(s): $list_commits. "
+                checkboxes="$checkboxes- [ ] Chapter [\`$file\`](https://github.com/${{ github.repository }}/commits/${EN_BRANCH}/$file#diff-{hash}) has new changes in the following commit(s): $list_commits. "
                 
 
                 #! Mention a user in the PR description
