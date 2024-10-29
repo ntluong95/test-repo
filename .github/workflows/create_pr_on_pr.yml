@@ -27,19 +27,6 @@ jobs:
       - name: Fetch all branches
         run: git fetch --all
 
-      - name: Check for .qmd file changes between deploy-preview and translation branch
-        run: |
-          # Define the list of changed .qmd files
-          changed_files=$(git diff --name-only deploy-preview "${TRANSLATION_BRANCH}" | grep '\.qmd$')
-
-          # Check if there are any .qmd file changes
-          if [ -z "$changed_files" ]; then
-            echo "No .qmd file changes to include in PR for ${TRANSLATION_BRANCH}"
-            continue  # Move to the next language if there are no changes
-          fi
-
-          echo "Changed .qmd files: $changed_files"
-
       - name: Create and update language branches and PRs
         run: |
           LANGS=("fr" "es" "vn" "jp" "tr" "pt" "ru")  
