@@ -103,7 +103,7 @@ jobs:
             echo "Pull Request Number: $PR_NUMBER"
 
             # Initialize new PR body
-            new_pr_body="Automated pull request for $lang handbook version ${VERSION_SUFFIX/_en/}"
+            new_pr_body="# Automated pull request for $lang handbook version ${VERSION_SUFFIX/_en/}"
             
             # Add new commits as checkboxes to the PR description
             IFS=$'\n' # Change the Internal Field Separator to newline for correct iteration over lines
@@ -112,7 +112,7 @@ jobs:
               for commit in $latest_commit_en_branch; do
               # checkboxes="$checkboxes- [ ] Chapter \`$file\` has new changes in the following commit(s) ($commits)."
                 checkboxes="$checkboxes- [ ] Chapter [\`$file\`](https://github.com/${{ github.repository }}/commit/$commit) has new changes in the following commit(s) "
-                checkboxes="$checkboxes"$'\n'"$checkbox"
+                
 
                 #! Mention a user in the PR description
                 case "$lang" in
@@ -124,6 +124,9 @@ jobs:
                   "pt") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish" ;;
                   "ru") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish" ;;
                 esac
+
+                checkboxes="$checkboxes"$'\n'"$checkbox"
+                
               done
             done
 
