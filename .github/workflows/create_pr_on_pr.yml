@@ -129,12 +129,11 @@ jobs:
             current_pr_body=$(gh pr view $PR_NUMBER --json body --jq '.body')
 
             # Append checkboxes to the current PR description
-            new_pr_body=$(printf "%s\n%s" "- [ ]" "$current_pr_body" "$checkboxes")
-
-            done
+            new_pr_body=$(printf "%s\n%s" "$current_pr_body" "$checkboxes")
 
             gh api repos/${{ github.repository }}/issues/$PR_NUMBER --method PATCH --field body="$new_pr_body"
             
+            done
 
           done
         env:
