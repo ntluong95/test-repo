@@ -234,6 +234,8 @@ knitr::include_graphics(here::here("images", "RStudio_tools_options.png"))
 
 **Restart**
 
+New line here
+
 If your R freezes, you can re-start R by going to the Session menu and clicking "Restart R". This avoids the hassle of closing and opening RStudio. Everything in your R environment will be removed when you do this.
 
 ### Keyboard shortcuts {.unnumbered}
