@@ -100,7 +100,7 @@ jobs:
             echo "Pull Request Number: $PR_NUMBER"
 
             #! Initialize new PR body
-            new_pr_body="# Automated pull request for $lang handbook version ${VERSION_SUFFIX/_en/}"
+            new_pr_body="# Automated pull request for $lang handbook version ${VERSION_SUFFIX/_en/}"$'\n\n'
 
             #! Mention a user in the PR description
             case "$lang" in
