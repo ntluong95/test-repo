@@ -57,6 +57,7 @@ jobs:
             
             # Force push the changes to the remote repository
             git push origin "${TRANSLATION_BRANCH}" --force
+
             
             
             # Get the date of the latest commit on the english branch
