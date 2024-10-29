@@ -106,8 +106,10 @@ jobs:
             IFS=$'\n' # Change the Internal Field Separator to newline for correct iteration over lines
             checkboxes=""
             for file in $changed_files; do
+              for commit in $latest_commit_en_branch; do
               # checkboxes="$checkboxes- [ ] Chapter \`$file\` has new changes in the following commit(s) ($commits)."
-              checkboxes="$checkboxes- [ ] [\`$file\`](https://github.com/${{ github.repository }}/commit/$$latest_commit_en_branch)"
+              checkboxes="$checkboxes- [ ] [\`$file\`](https://github.com/${{ github.repository }}/commit/$$commit)"
+              done
 
 
           #! Mention a user in the PR description
@@ -121,7 +123,7 @@ jobs:
               "pt") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish" ;;
               "ru") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish" ;;
             esac
-            checkboxes="$checkboxes\n"
+            checkboxes="$checkboxes \n"
 
 
             # Retrieve the current PR description
