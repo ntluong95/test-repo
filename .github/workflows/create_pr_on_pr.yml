@@ -107,7 +107,6 @@ jobs:
             for file in $changed_files; do
               # checkboxes="$checkboxes- [ ] Chapter \`$file\` has new changes in the following commit(s) ($commits)."
               checkboxes="$checkboxes- [ ] [\`$file\`](https://github.com/${{ github.repository }}/commit/$$latest_commit_en_branch)"
-            done
 
 
           #! Mention a user in the PR description
@@ -130,6 +129,8 @@ jobs:
             new_pr_body=$(printf "%s\n%s" "$current_pr_body" "$checkboxes")
 
             gh api repos/${{ github.repository }}/issues/$PR_NUMBER --method PATCH --field body="$new_pr_body"
+            
+            done
 
           done
         env:
