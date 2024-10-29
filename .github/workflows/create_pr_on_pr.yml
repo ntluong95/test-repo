@@ -58,8 +58,8 @@ jobs:
             # Force push the changes to the remote repository
             git push origin "${TRANSLATION_BRANCH}" --force
 
-            #! Get the list of changed .qmd files: COMPARE WITH deploy-preview branch (use -- to indicate it is a branch)
-            changed_files=$(git diff --name-only deploy-preview-- "${TRANSLATION_BRANCH}" | grep '\.qmd$')
+            #! Get the list of changed .qmd files: COMPARE WITH main branch
+            changed_files=$(git diff --name-only origin/main "${TRANSLATION_BRANCH}" | grep '\.qmd$')
 
             if [ -z "$changed_files" ]; then
               echo "No .qmd file changes to include in PR for ${TRANSLATION_BRANCH}"
