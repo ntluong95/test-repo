@@ -115,13 +115,13 @@ jobs:
           #! Mention a user in the PR description
             case "$lang" in
 
-              "vn") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish %s\n%s" ;;
-              "fr") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish %s\n%s" ;;
-              "es") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish %s\n%s" ;;
-              "jp") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish %s\n%s" ;;
-              "tr") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish %s\n%s" ;;
-              "pt") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish %s\n%s" ;;
-              "ru") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish %s\n%s" ;;
+              "vn") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish $'\n'" ;;
+              "fr") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish $'\n'" ;;
+              "es") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish $'\n'" ;;
+              "jp") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish $'\n'" ;;
+              "tr") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish $'\n'" ;;
+              "pt") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish $'\n'" ;;
+              "ru") checkboxes="$checkboxes @ntluong95, please review changes and check the box when you finish $'\n'" ;;
             esac
 
 
