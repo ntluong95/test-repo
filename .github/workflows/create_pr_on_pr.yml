@@ -41,7 +41,7 @@ jobs:
             if git ls-remote --exit-code --heads origin "${TRANSLATION_BRANCH}"; then
               echo "Branch ${TRANSLATION_BRANCH} exists. Checking out and rebasing with ${EN_BRANCH}"
               git checkout "${TRANSLATION_BRANCH}"
-              git pull -s recursive -X theirs --no-rebase --no-edit origin "${EN_BRANCH#refs/heads/}" --allow-unrelated-histories
+              git pull -s recursive -X theirs --no-rebase --no-edit origin "${EN_BRANCH#refs/heads/}" --allow-unrelated-histories || true
             else
               echo "Branch ${TRANSLATION_BRANCH} does not exist. Creating new branch from ${EN_BRANCH}."
               git checkout -b "${TRANSLATION_BRANCH}"
@@ -49,7 +49,7 @@ jobs:
             fi
             
             # Force push the changes to the remote repository
-            git push origin "${TRANSLATION_BRANCH}" --force
+            git push origin "${TRANSLATION_BRANCH}" --force || true
 
             # Get the list of changed .qmd files
             changed_files=$(git diff --name-only "${EN_BRANCH}" | grep '\.qmd$')
