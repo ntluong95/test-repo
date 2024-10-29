@@ -104,8 +104,9 @@ jobs:
             
             # Add new commits as checkboxes to the PR description
             checkboxes=""
-            for commit in $latest_commit_en_branch; do
-              checkboxes="$checkboxes- [ ] [$commit_messages](https://github.com/${{ github.repository }}/commit/$commit)"
+            for file in $changed_files; do
+              # checkboxes="$checkboxes- [ ] Chapter \`$file\` has new changes in the following commit(s) ($commits)."
+              checkboxes="$checkboxes- [ ] [\`$file\`](https://github.com/${{ github.repository }}/commit/$$latest_commit_en_branch)"
             done
 
 
