@@ -58,6 +58,10 @@ jobs:
             # Force push the changes to the remote repository
             git push origin "${TRANSLATION_BRANCH}" --force
 
+            #! Get the list of changed .qmd files
+            changed_files=$(git diff --name-only "${EN_BRANCH}" | grep '\.qmd$')
+
+            echo "Changed files: $changed_files"
             
             
             # Get the date of the latest commit on the english branch
