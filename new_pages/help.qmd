@@ -26,7 +26,7 @@ Once in the Issues tab, you can see the open issues. Review them to ensure your 
 knitr::include_graphics(here::here("images", "errors_Github_issues2.png"))
 ```
 
-
+Another change
   
 In your issue, follow the instructions below to provide a minimal, reproducible example. And please be courteous! Most people developing R packages and projects are doing so in their spare time (like this handbook!).  
 

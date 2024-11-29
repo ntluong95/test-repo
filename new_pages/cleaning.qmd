@@ -13,6 +13,8 @@ To demonstrate data cleaning, this page begins by importing a raw case linelist 
 
 ### Core functions {.unnumbered}  
 
+New files update
+
 This handbook emphasizes use of the functions from the [**tidyverse**](https://www.tidyverse.org/) family of R packages. The essential R functions demonstrated in this page are listed below.  
 
 Many of these functions belong to the [**dplyr**](https://dplyr.tidyverse.org/) R package, which provides "verb" functions to solve data manipulation challenges (the name is a reference to a "data frame-[plier](https://www.thefreedictionary.com/plier#:~:text=also%20ply%C2%B7er%20(pl%C4%AB%E2%80%B2,holding%2C%20bending%2C%20or%20cutting.)"). **dplyr** is part of the **tidyverse** family of R packages (which also includes **ggplot2**, **tidyr**, **stringr**, **tibble**, **purrr**, **magrittr**, and **forcats** among others).  
@@ -54,7 +56,7 @@ In "tidy" datasets, each column is a variable, each row is an observation, and e
 
 Most of this handbook is about managing and transforming data, so referring to the concrete data structures of rows and columns is more relevant than the more abstract observations and variables. Exceptions occur primarily in pages on data analysis, where you will see more references to variables and observations.  
 
-
+One more line
 
 <!-- ======================================================= -->
 <!-- ======================================================= -->
